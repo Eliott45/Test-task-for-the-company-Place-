@@ -943,7 +943,7 @@ MonoBehaviour:
   globalModel: 0
   fieldNames: []
   modelChanged: 1
-  format: '{StartCounterValue}'
+  format: '{CardCounterValue}'
   isFormatField: 0
   applyModelForFromatField: 1
 --- !u!114 &1894689884
@@ -998,7 +998,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1903962698}
   m_Layer: 5
-  m_Name: CollectioA
+  m_Name: CollectionA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1033,7 +1033,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2067056927}
   m_Layer: 5
-  m_Name: CollectioB
+  m_Name: CollectionB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
