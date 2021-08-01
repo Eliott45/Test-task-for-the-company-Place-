@@ -8,14 +8,29 @@ namespace AxGrid.Hello.States
     [State("Ready")]
     public class ReadyState : FSMState
     {
+        /// <summary>
+        /// Possible cards in the game.
+        /// </summary>
+        private static readonly List<GameObject> PrefabCards = CardsKit();
+        /// <summary>
+        /// Deck of cards in the game.
+        /// </summary>
+        private static List<GameObject> _cards;
+        
         [Enter]
         public void Enter()
         {
-            var cards = CardsKit();
+            _cards = Settings.Model.GetList<GameObject>("Cards");
+            CreateCards();
+        }
+
+        private static void CreateCards()
+        {
             // Populate collection with random cards from cards.
             for (var i = 0; i < Settings.Model.GetInt("CardCounterValue"); i++)
             {
-                Settings.Model.GetList<GameObject>("Cards").Add(cards[Random.Range(0, cards.Count)]);
+                var go = Object.Instantiate(PrefabCards[Random.Range(0, PrefabCards.Count)]);
+                _cards.Add(go);
                 // Debug.Log(Settings.Model.GetList<GameObject>("Cards")[i]);
             }
         }
@@ -52,12 +67,29 @@ namespace AxGrid.Hello.States
             {
                 case "Inc":
                     Settings.Model.Inc("CardCounterValue");
+                    AddCard();
                     break;
                 case "Dec":
                     if (Settings.Model.GetInt("CardCounterValue", 0) > 0)
+                    {
                         Settings.Model.Dec("CardCounterValue");
+                        RemoveCard();
+                    }
                     break;
             }
         }
+        
+        private static void AddCard()
+        {
+            _cards.Add(Object.Instantiate(PrefabCards[Random.Range(0, PrefabCards.Count)]));
+        }
+        
+        private static void RemoveCard()
+        {
+            var lastElement = _cards[_cards.Count - 1];
+            Object.Destroy(lastElement);
+            _cards.Remove(lastElement);
+        }
+        
     }
 }

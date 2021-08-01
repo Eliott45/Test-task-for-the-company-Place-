@@ -21,19 +21,15 @@ namespace AxGrid.Hello
         {
             // Запустим FSM
             Settings.Fsm.Start("Init");
-            
-            // Create game objects from collection.
-            for (var i = 0; i < Settings.Model.GetInt("CardCounterValue"); i++)
-            {
-                var go = Instantiate(Settings.Model.GetList<GameObject>("Cards")[i]);
-            }
         }
 
         [OnUpdate]
         public void UpdateFSM()
         {
             Settings.Fsm.Update(Time.deltaTime);
-            
+         
         }
+        
+        
     }
 }
