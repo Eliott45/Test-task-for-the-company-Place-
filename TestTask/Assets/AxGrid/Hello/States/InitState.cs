@@ -14,10 +14,11 @@ namespace AxGrid.Hello.States
         public void Enter()
         {
             Log.Info("Init objects");
-            Settings.Model.Set("CardCounterValue", 5);
+            Settings.Model.Set("CardCounterValue", 6);
             
-            var cards = new List<GameObject>();
-            Settings.Model.Set("Cards", cards);
+            Settings.Model.Set("CardsA", new List<GameObject>());
+            Settings.Model.Set("CardsB", new List<GameObject>());
+            
             
             Parent.Change("Ready");
         }

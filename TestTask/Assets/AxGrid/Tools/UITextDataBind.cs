@@ -3,7 +3,7 @@ using AxGrid.Base;
 using SmartFormat;
 using UnityEngine;
 
-namespace AxGrid.Tools.Binders
+namespace AxGrid.Tools
 {
     /// <summary>
     /// Биндит Model.SmartFormat к полю

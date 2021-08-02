@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace AxGrid.Tools.Binders{
+namespace AxGrid.Tools{
 	
 	/// <summary>
 	/// Бинд кнопки в модель

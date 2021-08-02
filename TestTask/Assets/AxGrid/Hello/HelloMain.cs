@@ -7,7 +7,10 @@ namespace AxGrid.Hello
 {
     public class HelloMain : MonoBehaviourExt // Из за особенностей юнити нельзя использовать базовые методы Start, Avake, Update итп
     {
-
+        [Header("Set in Inspector:")] 
+        [SerializeField] private Transform _collectionA;
+        [SerializeField] private Transform _collectionB;
+        
         [OnAwake]
         public void Init()
         {

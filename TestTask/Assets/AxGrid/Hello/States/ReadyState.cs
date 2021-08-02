@@ -20,13 +20,14 @@ namespace AxGrid.Hello.States
         [Enter]
         public void Enter()
         {
-            _cards = Settings.Model.GetList<GameObject>("Cards");
+            _cards = Settings.Model.GetList<GameObject>("CardsA");
             CreateCards();
+            Hand();
         }
 
         private static void CreateCards()
         {
-            // Populate collection with random cards from cards.
+            // Populate collection with random cards from prefabs of card.
             for (var i = 0; i < Settings.Model.GetInt("CardCounterValue"); i++)
             {
                 var go = Object.Instantiate(PrefabCards[Random.Range(0, PrefabCards.Count)]);
@@ -78,10 +79,34 @@ namespace AxGrid.Hello.States
                     break;
             }
         }
+
+        private static void Hand()
+        {
+            int r = 0, l = 0;
+            for (var i = 1; i < _cards.Count; i++)
+            {
+                var pos = _cards[i].transform.position;
+                pos.x = 0;
+                if (i % 2 == 0)
+                {
+                    pos += new Vector3(1 + r, 0, 0);
+                    r++;
+                }
+                else
+                {
+                    pos += new Vector3(-1 - l, 0, 0);
+                    l++;
+                }
+
+                _cards[i].GetComponent<Card>().SetLayer(-i);
+                _cards[i].transform.position = pos;
+            }
+        }
         
         private static void AddCard()
         {
             _cards.Add(Object.Instantiate(PrefabCards[Random.Range(0, PrefabCards.Count)]));
+            Hand();
         }
         
         private static void RemoveCard()
@@ -89,6 +114,7 @@ namespace AxGrid.Hello.States
             var lastElement = _cards[_cards.Count - 1];
             Object.Destroy(lastElement);
             _cards.Remove(lastElement);
+            Hand();
         }
         
     }
