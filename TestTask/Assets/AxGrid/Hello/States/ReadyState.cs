@@ -16,7 +16,8 @@ namespace AxGrid.Hello.States
         /// <summary>
         /// Deck of cards in the game.
         /// </summary>
-        private static List<GameObject> _cards;
+        private static List<GameObject> _cardsA;
+        private static List<GameObject> _cardsB;
         private static Transform _collectionAnchorA;
         private Transform _collectionAnchorB;
 
@@ -24,17 +25,18 @@ namespace AxGrid.Hello.States
         public void Enter()
         {
             CreateAnchors();
-            _cards = Settings.Model.GetList<GameObject>("CardsA");
+            _cardsA = Settings.Model.GetList<GameObject>("CardsA");
+            _cardsB = Settings.Model.GetList<GameObject>("CardsB");
             CreateCards();
-            Hand();
+            Hand(_cardsA);
         }
 
         private void CreateAnchors()
         {
             var goA = new GameObject("collectionA");
             var goB = new GameObject("collectionB");
-            goA.transform.position = new Vector3(0,-3,100);
-            goB.transform.position = new Vector3(0,3, 100);
+            goA.transform.position = new Vector3(0,-4,100);
+            goB.transform.position = new Vector3(0,4, 100);
             _collectionAnchorA = goA.transform;
             _collectionAnchorB = goB.transform;
         }
@@ -45,7 +47,9 @@ namespace AxGrid.Hello.States
             for (var i = 0; i < Settings.Model.GetInt("CardCounterValue"); i++)
             {
                 var go = Object.Instantiate(PrefabsCards[Random.Range(0, PrefabsCards.Count)], _collectionAnchorA, false);
-                _cards.Add(go);
+                go.GetComponent<Card>().CardID = i;
+                go.GetComponent<Card>().collection = Card.ECollection.A;
+                _cardsA.Add(go);
                 // Debug.Log(Settings.Model.GetList<GameObject>("Cards")[i]);
             }
         }
@@ -82,26 +86,78 @@ namespace AxGrid.Hello.States
             {
                 case "Inc":
                     Settings.Model.Inc("CardCounterValue");
-                    AddCard();
+                    CreateCard();
+                    Hand(_cardsA);
                     break;
                 case "Dec":
                     if (Settings.Model.GetInt("CardCounterValue", 0) > 0)
                     {
                         Settings.Model.Dec("CardCounterValue");
                         RemoveCard();
+                        Hand(_cardsA);
                     }
                     break;
             }
         }
+        
+        [Bind]
+        public void SwapCard(GameObject card)
+        {
+            var data = card.GetComponent<Card>();
+            if (data.collection == Card.ECollection.A)
+            {
+                Settings.Model.Dec("CardCounterValue");
+                _cardsA.Remove(card);
+                _cardsB.Add(card);
+                data.collection = Card.ECollection.B;
+                card.transform.parent = _collectionAnchorB;
+            }
+            else
+            {
+                Settings.Model.Inc("CardCounterValue");
+                _cardsB.Remove(card);
+                _cardsA.Add(card);
+                data.collection = Card.ECollection.A;
+                card.transform.parent = _collectionAnchorA;
+            }
+            card.transform.localPosition = Vector3.zero;
+            Hand(_cardsA);
+            Hand(_cardsB);
+        }
 
-        private static void Hand()
+        private static void CreateCard()
+        {
+            _cardsA.Add(Object.Instantiate(PrefabsCards[Random.Range(0, PrefabsCards.Count)], _collectionAnchorA, false));
+            for (var i = 0; i < _cardsA.Count; i++)
+            {
+                _cardsA[i].GetComponent<Card>().CardID = i;
+            }
+        }
+
+        private static void RemoveCard()
+        {
+            var element = _cardsA[_cardsA.Count - 1];
+            Object.Destroy(element);
+            _cardsA.Remove(element);
+            for (var i = 0; i < _cardsA.Count; i++)
+            {
+                _cardsA[i].GetComponent<Card>().CardID = i;
+            }
+        }
+
+        private static void Hand(IReadOnlyList<GameObject> deck)
         {
             int r = 0, l = 0;
-            for (var i = 1; i < _cards.Count; i++)
+            for (var i = 0; i < deck.Count; i++)
             {
-                var pos = _cards[i].transform.position;
+                deck[i].GetComponent<Card>().CardID = i;
+                var pos = deck[i].transform.position;
                 pos.x = 0;
-                if (i % 2 == 0)
+                if (i == 0)
+                {
+                    pos += Vector3.zero;
+                }
+                else if (i % 2 == 0)
                 {
                     pos += new Vector3(1 + r, 0, 0);
                     r++;
@@ -111,25 +167,9 @@ namespace AxGrid.Hello.States
                     pos += new Vector3(-1 - l, 0, 0);
                     l++;
                 }
-
-                _cards[i].GetComponent<Card>().SetLayer(-i);
-                _cards[i].transform.position = pos;
+                deck[i].GetComponent<Card>().SetLayer(-i);
+                deck[i].transform.position = pos;
             }
         }
-        
-        private static void AddCard()
-        {
-            _cards.Add(Object.Instantiate(PrefabsCards[Random.Range(0, PrefabsCards.Count)], _collectionAnchorA, false));
-            Hand();
-        }
-        
-        private static void RemoveCard()
-        {
-            var lastElement = _cards[_cards.Count - 1];
-            Object.Destroy(lastElement);
-            _cards.Remove(lastElement);
-            Hand();
-        }
-        
     }
 }

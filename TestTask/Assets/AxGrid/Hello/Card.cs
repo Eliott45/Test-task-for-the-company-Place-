@@ -4,6 +4,15 @@ namespace AxGrid.Hello
 {
     public class Card : MonoBehaviour, IClicked
     {
+        public enum ECollection
+        {
+            A,
+            B
+        };
+        
+        public int CardID;
+        public ECollection collection;
+        
         public void SetLayer(int i)
         {
             GetComponent<SpriteRenderer>().sortingOrder = i;
@@ -15,7 +24,7 @@ namespace AxGrid.Hello
 
         public void ONClickAction()
         {
-            Debug.Log("!");
+            Settings.Fsm.Invoke("SwapCard", gameObject);
         }
     }
 }
