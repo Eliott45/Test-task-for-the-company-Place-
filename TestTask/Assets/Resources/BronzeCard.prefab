@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5294414596433360205}
   - component: {fileID: 5294414596433360206}
   - component: {fileID: -5980384550361398329}
+  - component: {fileID: 4510907300928719820}
   m_Layer: 0
   m_Name: BronzeCard
   m_TagString: Untagged
@@ -74,7 +75,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 403f173afe9d946ff827361593b5d9da, type: 3}
-  m_Color: {r: 0.8867924, g: 0.59326833, b: 0.13803846, a: 1}
+  m_Color: {r: 0.9150943, g: 0.6381771, b: 0.082013145, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -96,6 +97,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd5cdf60cea64ae438a1377a95da2d1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &4510907300928719820
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5294414596433360207}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 7.0599995, y: 11.359999, z: 0.19999999}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5294414597325591525
 GameObject:
   m_ObjectHideFlags: 0

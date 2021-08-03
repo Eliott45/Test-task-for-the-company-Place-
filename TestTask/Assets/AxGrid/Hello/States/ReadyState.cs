@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using AxGrid.Base;
 using AxGrid.FSM;
 using AxGrid.Model;
 using UnityEngine;
@@ -11,18 +12,31 @@ namespace AxGrid.Hello.States
         /// <summary>
         /// Possible cards in the game.
         /// </summary>
-        private static readonly List<GameObject> PrefabCards = CardsKit();
+        private static readonly List<GameObject> PrefabsCards = CardsKit();
         /// <summary>
         /// Deck of cards in the game.
         /// </summary>
         private static List<GameObject> _cards;
-        
+        private static Transform _collectionAnchorA;
+        private Transform _collectionAnchorB;
+
         [Enter]
         public void Enter()
         {
+            CreateAnchors();
             _cards = Settings.Model.GetList<GameObject>("CardsA");
             CreateCards();
             Hand();
+        }
+
+        private void CreateAnchors()
+        {
+            var goA = new GameObject("collectionA");
+            var goB = new GameObject("collectionB");
+            goA.transform.position = new Vector3(0,-3,100);
+            goB.transform.position = new Vector3(0,3, 100);
+            _collectionAnchorA = goA.transform;
+            _collectionAnchorB = goB.transform;
         }
 
         private static void CreateCards()
@@ -30,7 +44,7 @@ namespace AxGrid.Hello.States
             // Populate collection with random cards from prefabs of card.
             for (var i = 0; i < Settings.Model.GetInt("CardCounterValue"); i++)
             {
-                var go = Object.Instantiate(PrefabCards[Random.Range(0, PrefabCards.Count)]);
+                var go = Object.Instantiate(PrefabsCards[Random.Range(0, PrefabsCards.Count)], _collectionAnchorA, false);
                 _cards.Add(go);
                 // Debug.Log(Settings.Model.GetList<GameObject>("Cards")[i]);
             }
@@ -105,7 +119,7 @@ namespace AxGrid.Hello.States
         
         private static void AddCard()
         {
-            _cards.Add(Object.Instantiate(PrefabCards[Random.Range(0, PrefabCards.Count)]));
+            _cards.Add(Object.Instantiate(PrefabsCards[Random.Range(0, PrefabsCards.Count)], _collectionAnchorA, false));
             Hand();
         }
         

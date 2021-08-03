@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace AxGrid.Hello
 {
-    public class Card : MonoBehaviour
+    public class Card : MonoBehaviour, IClicked
     {
         public void SetLayer(int i)
         {
@@ -11,6 +11,11 @@ namespace AxGrid.Hello
             {
                 child.GetComponent<SpriteRenderer>().sortingOrder = i;
             }
+        }
+
+        public void ONClickAction()
+        {
+            Debug.Log("!");
         }
     }
 }
