@@ -22,7 +22,7 @@ namespace AxGrid.Hello.States
         private static List<GameObject> _cardsA;
         private static List<GameObject> _cardsB;
         private static Transform _collectionAnchorA;
-        private Transform _collectionAnchorB;
+        private static Transform _collectionAnchorB;
         
 
         #endregion
@@ -75,6 +75,8 @@ namespace AxGrid.Hello.States
                 _cardsB.Add(card);
                 data.collection = Card.ECollection.B;
                 card.transform.parent = _collectionAnchorB;
+                card.GetComponent<Card>().target = _collectionAnchorB.position;
+                card.GetComponent<Card>().moving = true;
             }
             else
             {
@@ -83,10 +85,12 @@ namespace AxGrid.Hello.States
                 _cardsA.Add(card);
                 data.collection = Card.ECollection.A;
                 card.transform.parent = _collectionAnchorA;
-            }
-            card.transform.localPosition = Vector3.zero;
+                card.GetComponent<Card>().target = _collectionAnchorA.position;
+                card.GetComponent<Card>().moving = true;
+            } 
+            // card.transform.localPosition = Vector3.zero;
             Hand(_cardsA);
-            Hand(_cardsB);
+            Hand(_cardsB, Card.ECollection.B);
         }
 
         #endregion
@@ -115,7 +119,7 @@ namespace AxGrid.Hello.States
             for (var i = 0; i < Settings.Model.GetInt("CardCounterValue"); i++)
             {
                 var go = Object.Instantiate(PrefabsCards[Random.Range(0, PrefabsCards.Count)], _collectionAnchorA, false);
-                go.GetComponent<Card>().CardID = i;
+                go.GetComponent<Card>().cardID = i;
                 go.GetComponent<Card>().collection = Card.ECollection.A;
                 _cardsA.Add(go);
                 // Debug.Log(Settings.Model.GetList<GameObject>("Cards")[i]);
@@ -152,7 +156,7 @@ namespace AxGrid.Hello.States
             _cardsA.Add(Object.Instantiate(PrefabsCards[Random.Range(0, PrefabsCards.Count)], _collectionAnchorA, false));
             for (var i = 0; i < _cardsA.Count; i++)
             {
-                _cardsA[i].GetComponent<Card>().CardID = i;
+                _cardsA[i].GetComponent<Card>().cardID = i;
             }
         }
 
@@ -163,7 +167,7 @@ namespace AxGrid.Hello.States
             _cardsA.Remove(element);
             for (var i = 0; i < _cardsA.Count; i++)
             {
-                _cardsA[i].GetComponent<Card>().CardID = i;
+                _cardsA[i].GetComponent<Card>().cardID = i;
             }
         }
 
@@ -171,18 +175,20 @@ namespace AxGrid.Hello.States
         /// Set the correct position of the cards.
         /// </summary>
         /// <param name="deck">The deck of cards to be corrected.</param>
-        private static void Hand(IReadOnlyList<GameObject> deck)
+        private static void Hand(IReadOnlyList<GameObject> deck, Card.ECollection collection = Card.ECollection.A)
         {
             var b = deck.Count / 2;
             var f = 0;
+            var y = collection == Card.ECollection.A ? _collectionAnchorA.position.y : _collectionAnchorB.position.y;
             for (var i = 0; i < deck.Count; i++)
             {
-                deck[i].GetComponent<Card>().CardID = i;
+                deck[i].GetComponent<Card>().cardID = i;
                 var pos = deck[i].transform.position;
+                pos.y = y;
                 pos.x = 0;
                 if (i < deck.Count / 2)
                 {
-                    pos += new Vector3(-b, 0, 0);
+                    pos += new Vector3(-b, 0, 0); 
                     b--;
                 }
                 else
@@ -190,9 +196,15 @@ namespace AxGrid.Hello.States
                     pos += new Vector3(f, 0, 0);
                     f++;
                 }
-                deck[i].GetComponent<Card>().SetLayer(-i);
-                deck[i].transform.position = pos;
+                var cardData = deck[i].GetComponent<Card>();
+                cardData.SetLayer(-i);
+                cardData.target = pos;
+                cardData.moving = true;
+                // deck[i].GetComponent<Card>().StartCoroutine(deck[i].GetComponent<Card>().Move(pos));
+                // deck[i].transform.position = pos;
+                
             }
+            
         }
 
         #endregion

@@ -22,11 +22,12 @@ public class MouseController : MonoBehaviour
     {
         var ray = _camera.ScreenPointToRay(Input.mousePosition);
 
-        RaycastHit2D hits2D = Physics2D.GetRayIntersection(ray);
+        var hits2D = Physics2D.GetRayIntersection(ray);
 
         if (!hits2D.collider) return;
         var click = hits2D.collider.GetComponent<IClicked>();
         click?.ONClickAction();
+        
         /*
         var ray = _camera.ScreenPointToRay(Input.mousePosition);
 
