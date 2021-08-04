@@ -14,7 +14,7 @@ namespace AxGrid.Hello.States
         /// </summary>
         private static readonly List<GameObject> PrefabsCards = CardsKit();
         /// <summary>
-        /// Deck of cards in the game.
+        /// Deck of cards in the game (collection A).
         /// </summary>
         private static List<GameObject> _cardsA;
         private static List<GameObject> _cardsB;
@@ -31,16 +31,22 @@ namespace AxGrid.Hello.States
             Hand(_cardsA);
         }
 
+        /// <summary>
+        /// Creating empty objects in the scene.
+        /// </summary>
         private void CreateAnchors()
         {
             var goA = new GameObject("collectionA");
             var goB = new GameObject("collectionB");
-            goA.transform.position = new Vector3(0,-3.5f,100);
-            goB.transform.position = new Vector3(0,3.5f, 100);
+            goA.transform.position = new Vector3(0,-2,100);
+            goB.transform.position = new Vector3(0,2, 100);
             _collectionAnchorA = goA.transform;
             _collectionAnchorB = goB.transform;
         }
 
+        /// <summary>
+        /// Collection creation a.
+        /// </summary>
         private static void CreateCards()
         {
             // Populate collection with random cards from prefabs of card.
@@ -124,7 +130,7 @@ namespace AxGrid.Hello.States
             Hand(_cardsA);
             Hand(_cardsB);
         }
-
+        
         private static void CreateCard()
         {
             _cardsA.Add(Object.Instantiate(PrefabsCards[Random.Range(0, PrefabsCards.Count)], _collectionAnchorA, false));
@@ -145,9 +151,14 @@ namespace AxGrid.Hello.States
             }
         }
 
+        /// <summary>
+        /// Set the correct position of the cards.
+        /// </summary>
+        /// <param name="deck">The deck of cards to be corrected.</param>
         private static void Hand(IReadOnlyList<GameObject> deck)
         {
-            int b = 0, f = 1;
+            var b = deck.Count / 2;
+            int f = 0;
             for (var i = 0; i < deck.Count; i++)
             {
                 deck[i].GetComponent<Card>().CardID = i;
@@ -155,7 +166,7 @@ namespace AxGrid.Hello.States
                 pos.x = 0;
                 if (i < deck.Count / 2)
                 {
-                    pos += new Vector3(b, 0, 0);
+                    pos += new Vector3(-b, 0, 0);
                     b--;
                 }
                 else

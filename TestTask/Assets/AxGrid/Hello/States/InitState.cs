@@ -14,7 +14,7 @@ namespace AxGrid.Hello.States
         public void Enter()
         {
             Log.Info("Init objects");
-            Settings.Model.Set("CardCounterValue", 7);
+            Settings.Model.Set("CardCounterValue", 10);
             
             Settings.Model.Set("CardsA", new List<GameObject>());
             Settings.Model.Set("CardsB", new List<GameObject>());
