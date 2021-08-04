@@ -9,6 +9,9 @@ namespace AxGrid.Hello.States
     [State("Ready")]
     public class ReadyState : FSMState
     {
+
+        #region Fields 
+        
         /// <summary>
         /// Possible cards in the game.
         /// </summary>
@@ -20,6 +23,11 @@ namespace AxGrid.Hello.States
         private static List<GameObject> _cardsB;
         private static Transform _collectionAnchorA;
         private Transform _collectionAnchorB;
+        
+
+        #endregion
+
+        #region FrameworkMethods
 
         [Enter]
         public void Enter()
@@ -30,6 +38,60 @@ namespace AxGrid.Hello.States
             CreateCards();
             Hand(_cardsA);
         }
+
+        #endregion
+
+        #region Binds
+
+        [Bind]
+        public void OnBtn(string name)
+        {
+            switch (name)
+            {
+                case "Inc":
+                    Settings.Model.Inc("CardCounterValue");
+                    CreateCard();
+                    Hand(_cardsA);
+                    break;
+                case "Dec":
+                    if (Settings.Model.GetInt("CardCounterValue", 0) > 0)
+                    {
+                        Settings.Model.Dec("CardCounterValue");
+                        RemoveCard();
+                        Hand(_cardsA);
+                    }
+                    break;
+            }
+        }
+        
+        [Bind]
+        public void SwapCard(GameObject card)
+        {
+            var data = card.GetComponent<Card>();
+            if (data.collection == Card.ECollection.A)
+            {
+                Settings.Model.Dec("CardCounterValue");
+                _cardsA.Remove(card);
+                _cardsB.Add(card);
+                data.collection = Card.ECollection.B;
+                card.transform.parent = _collectionAnchorB;
+            }
+            else
+            {
+                Settings.Model.Inc("CardCounterValue");
+                _cardsB.Remove(card);
+                _cardsA.Add(card);
+                data.collection = Card.ECollection.A;
+                card.transform.parent = _collectionAnchorA;
+            }
+            card.transform.localPosition = Vector3.zero;
+            Hand(_cardsA);
+            Hand(_cardsB);
+        }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Creating empty objects in the scene.
@@ -84,52 +146,6 @@ namespace AxGrid.Hello.States
         {
             return Resources.Load(name) as GameObject;
         }
-
-        [Bind]
-        public void OnBtn(string name)
-        {
-            switch (name)
-            {
-                case "Inc":
-                    Settings.Model.Inc("CardCounterValue");
-                    CreateCard();
-                    Hand(_cardsA);
-                    break;
-                case "Dec":
-                    if (Settings.Model.GetInt("CardCounterValue", 0) > 0)
-                    {
-                        Settings.Model.Dec("CardCounterValue");
-                        RemoveCard();
-                        Hand(_cardsA);
-                    }
-                    break;
-            }
-        }
-        
-        [Bind]
-        public void SwapCard(GameObject card)
-        {
-            var data = card.GetComponent<Card>();
-            if (data.collection == Card.ECollection.A)
-            {
-                Settings.Model.Dec("CardCounterValue");
-                _cardsA.Remove(card);
-                _cardsB.Add(card);
-                data.collection = Card.ECollection.B;
-                card.transform.parent = _collectionAnchorB;
-            }
-            else
-            {
-                Settings.Model.Inc("CardCounterValue");
-                _cardsB.Remove(card);
-                _cardsA.Add(card);
-                data.collection = Card.ECollection.A;
-                card.transform.parent = _collectionAnchorA;
-            }
-            card.transform.localPosition = Vector3.zero;
-            Hand(_cardsA);
-            Hand(_cardsB);
-        }
         
         private static void CreateCard()
         {
@@ -158,7 +174,7 @@ namespace AxGrid.Hello.States
         private static void Hand(IReadOnlyList<GameObject> deck)
         {
             var b = deck.Count / 2;
-            int f = 0;
+            var f = 0;
             for (var i = 0; i < deck.Count; i++)
             {
                 deck[i].GetComponent<Card>().CardID = i;
@@ -178,5 +194,8 @@ namespace AxGrid.Hello.States
                 deck[i].transform.position = pos;
             }
         }
+
+        #endregion
+        
     }
 }
