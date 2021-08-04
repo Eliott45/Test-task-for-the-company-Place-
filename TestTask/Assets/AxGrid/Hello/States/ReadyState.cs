@@ -35,8 +35,8 @@ namespace AxGrid.Hello.States
         {
             var goA = new GameObject("collectionA");
             var goB = new GameObject("collectionB");
-            goA.transform.position = new Vector3(0,-4,100);
-            goB.transform.position = new Vector3(0,4, 100);
+            goA.transform.position = new Vector3(0,-3.5f,100);
+            goB.transform.position = new Vector3(0,3.5f, 100);
             _collectionAnchorA = goA.transform;
             _collectionAnchorB = goB.transform;
         }
@@ -147,25 +147,21 @@ namespace AxGrid.Hello.States
 
         private static void Hand(IReadOnlyList<GameObject> deck)
         {
-            int r = 0, l = 0;
+            int b = 0, f = 1;
             for (var i = 0; i < deck.Count; i++)
             {
                 deck[i].GetComponent<Card>().CardID = i;
                 var pos = deck[i].transform.position;
                 pos.x = 0;
-                if (i == 0)
+                if (i < deck.Count / 2)
                 {
-                    pos += Vector3.zero;
-                }
-                else if (i % 2 == 0)
-                {
-                    pos += new Vector3(1 + r, 0, 0);
-                    r++;
+                    pos += new Vector3(b, 0, 0);
+                    b--;
                 }
                 else
                 {
-                    pos += new Vector3(-1 - l, 0, 0);
-                    l++;
+                    pos += new Vector3(f, 0, 0);
+                    f++;
                 }
                 deck[i].GetComponent<Card>().SetLayer(-i);
                 deck[i].transform.position = pos;
