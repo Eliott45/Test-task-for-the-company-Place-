@@ -17,10 +17,12 @@ namespace AxGrid.Hello
         private float _speed = 9f;
         
         [Header("Set dynamical:")]
-        public ECollection collection;
         public int cardID;
+        public ECollection collection;
+        
         public bool moving;
         public Vector3 target;
+        
 
         private void FixedUpdate()
         {
@@ -42,13 +44,18 @@ namespace AxGrid.Hello
         }
         
         /*
-        public IEnumerator Move(Vector3 target)
+        public void Move(Vector3 target)
         {
-            while (transform.position != target)
+            var currentPos = Vector3.zero;
+            var newPos = target; 
+            var a = CPath.Create().Action(() =>
             {
-                transform.position = Vector3.MoveTowards(transform.position, target, 8f * Time.deltaTime);
-                yield return null;
-            }
+                currentPos = transform.position;
+            }).EasingLinear(1f, 0f, 1f, value =>
+            {
+                transform.position = Vector3.Lerp(currentPos, newPos, value);
+            });
+            
         }
         */
         
