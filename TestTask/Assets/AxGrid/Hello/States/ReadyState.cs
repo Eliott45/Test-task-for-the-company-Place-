@@ -12,13 +12,7 @@ namespace AxGrid.Hello.States
 
         #region Fields 
         
-        /// <summary>
-        /// Possible cards in the game.
-        /// </summary>
         private static readonly List<GameObject> PrefabsCards = CardsKit();
-        /// <summary>
-        /// Deck of cards in the game (collection A).
-        /// </summary>
         private static List<GameObject> _cardsA;
         private static List<GameObject> _cardsB;
         private static GameObject _collectionAnchorA;
@@ -38,9 +32,8 @@ namespace AxGrid.Hello.States
             CreateCards();
             _collectionAnchorA.GetComponent<CardCollection>().cards = _cardsA;
             _collectionAnchorB.GetComponent<CardCollection>().cards = _cardsB;
-            _collectionAnchorA.GetComponent<CardCollection>().Refresh();
+            Settings.GlobalModel.EventManager.Invoke("Shuffle");
         }
-        
         
         #endregion
 
@@ -63,7 +56,7 @@ namespace AxGrid.Hello.States
                     }
                     break;
             }
-            _collectionAnchorA.GetComponent<CardCollection>().Refresh();
+            Settings.GlobalModel.EventManager.Invoke("Shuffle");
         }
         
         [Bind]
@@ -84,8 +77,7 @@ namespace AxGrid.Hello.States
                 _cardsA.Add(card);
                 data.collection = Card.ECollection.A;
             }
-            _collectionAnchorA.GetComponent<CardCollection>().Refresh();
-            _collectionAnchorB.GetComponent<CardCollection>().Refresh();
+            Settings.GlobalModel.EventManager.Invoke("Shuffle");
         }
 
         #endregion

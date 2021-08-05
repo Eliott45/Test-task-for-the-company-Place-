@@ -19,7 +19,6 @@ namespace AxGrid.Hello.States
             Settings.Model.Set("CardsA", new List<GameObject>());
             Settings.Model.Set("CardsB", new List<GameObject>());
             
-            
             Parent.Change("Ready");
         }
 

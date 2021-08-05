@@ -62,6 +62,7 @@ namespace AxGrid.Hello
         public void ONClickAction()
         {
             Settings.Fsm.Invoke("SwapCard", gameObject);
+            
         }
     }
 }

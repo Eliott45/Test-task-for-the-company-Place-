@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,13 +6,18 @@ namespace AxGrid.Hello
 {
     public class CardCollection : MonoBehaviour
     {
-        public string nameField;
+        public string nameField = "Test";
         public List<GameObject> cards;
+
+        private void Awake()
+        {
+            Settings.GlobalModel.EventManager.AddAction("Shuffle", Refresh);
+        }
 
         /// <summary>
         /// Set the correct position of the cards.
         /// </summary>
-        public void Refresh()
+        private void Refresh()
         {
             var b = cards.Count / 2;
             var f = 0;
