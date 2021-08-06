@@ -58,10 +58,15 @@ namespace AxGrid.Hello
             
         }
         */
+
+        public void Delete()
+        {
+            Destroy(gameObject);
+        }
         
         public void ONClickAction()
         {
-            Settings.Fsm.Invoke("SwapCard", gameObject);
+            Settings.Fsm.Invoke("SwapCard", this);
             
         }
     }

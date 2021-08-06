@@ -6,8 +6,11 @@ namespace AxGrid.Hello
 {
     public class CardCollection : MonoBehaviour
     {
-        public string nameField = "Test";
-        public List<GameObject> cards;
+        [Header("Set in Inspector")] 
+        [SerializeField] private Card.ECollection _collection;
+        
+        [Header("Set Dynamically")] 
+        public List<Card> cards;
 
         private void Awake()
         {
@@ -19,11 +22,12 @@ namespace AxGrid.Hello
         /// </summary>
         private void Refresh()
         {
+            cards = Settings.Model.GetList<Card>(_collection == Card.ECollection.A ? "CardsA" : "CardsB");
             var b = cards.Count / 2;
             var f = 0;
             for (var i = 0; i < cards.Count; i++)
             {
-                cards[i].GetComponent<Card>().cardID = i;
+                cards[i].cardID = i;
                 cards[i].transform.parent = transform;
                 var pos = cards[i].transform.position;
                 pos.x = 0;
@@ -39,7 +43,7 @@ namespace AxGrid.Hello
                     f++;
                 }
 
-                var cardData = cards[i].GetComponent<Card>();
+                var cardData = cards[i];
                 cardData.SetLayer(-i);
                 cardData.target = pos;
                 cardData.moving = true;

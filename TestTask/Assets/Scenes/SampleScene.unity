@@ -412,6 +412,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 765476983}
+  - component: {fileID: 765476984}
   m_Layer: 0
   m_Name: collectionB
   m_TagString: Untagged
@@ -433,6 +434,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &765476984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 765476982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e847127c8c76c049b223679e147de48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _collection: 1
+  cards: []
 --- !u!1 &792266354
 GameObject:
   m_ObjectHideFlags: 0
@@ -622,6 +637,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1454390045}
   - component: {fileID: 1454390044}
+  - component: {fileID: 1454390046}
   m_Layer: 0
   m_Name: collectionA
   m_TagString: Untagged
@@ -659,6 +675,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1454390046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1454390043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e847127c8c76c049b223679e147de48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _collection: 0
+  cards: []
 --- !u!1 &1655581599
 GameObject:
   m_ObjectHideFlags: 0
