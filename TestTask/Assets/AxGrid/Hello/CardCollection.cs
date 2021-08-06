@@ -42,11 +42,11 @@ namespace AxGrid.Hello
                     pos += new Vector3(f, 0, 0);
                     f++;
                 }
-
-                var cardData = cards[i];
-                cardData.SetLayer(-i);
-                cardData.target = pos;
-                cardData.moving = true;
+                
+                cards[i].SetLayer(-i);
+                // cards[i].target = pos;
+                cards[i].Move(pos);
+                cards[i].moving = true;
             }
         }
     }
